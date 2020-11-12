@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetScript : MonoBehaviour
+    
+    //Detects collision with arrow and makes destroys the target
+
 {
     public Vector2 partsMinMaxSpeed;
 
@@ -16,11 +19,12 @@ public class TargetScript : MonoBehaviour
         //Invoke("HitTarget", 2f);//For testing purposes
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision");
-        if (col.collider.tag == "Arrow")
+        Debug.Log("Target collision with: " + other.name);
+        if (other.tag == "Arrow")
         {
+            Debug.Log("Target Hit!");
             HitTarget();
         }
     }
@@ -32,7 +36,10 @@ public class TargetScript : MonoBehaviour
             r.isKinematic = false;
             r.velocity = Random.onUnitSphere * Random.Range(partsMinMaxSpeed.x, partsMinMaxSpeed.y);
             r.angularVelocity = Random.onUnitSphere * Random.Range(partsMinMaxSpeed.x, partsMinMaxSpeed.y);
+            r.transform.SetParent(null, true);
+            Debug.Log("Part position: " + r.transform.position);
         }
+        Destroy(gameObject);
     }
 
     //public Vector3 RandomCubeDirection()//Gives a random direction in a cube within a minimum and a maximum
